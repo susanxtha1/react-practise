@@ -1,14 +1,18 @@
 import React, { useState, createContext } from "react";
-
+interface Ifriends{
+  isfriend:boolean;
+  username:string;
+}
 interface ContactContextType {
-  isFriend: boolean;
+  friends:Ifriends[];
+ 
   addFriend: () => void;
   showFriendDetail: (username: string) => void;
   showFriendContext: (username: string) => void;
 }
 
 export const ContactContext = createContext<ContactContextType>({
-  isFriend: false,
+  friends: [],
   addFriend: () => {},
   showFriendDetail: () => {},
   showFriendContext: () => {},
@@ -19,11 +23,11 @@ interface ContactProviderProps {
 }
 
 export const ContactProvider = ({ children }: ContactProviderProps) => {
-  const [isFriend, setIsfriend] = useState<boolean>(false);
+  const [friends, setFriends] = useState<Ifriends[]>([]);
 
   const addFriend = () => {
     //later Update in database through APIs
-    setIsfriend(true);
+    setFriends([]);
   };
 
   
@@ -36,7 +40,7 @@ export const ContactProvider = ({ children }: ContactProviderProps) => {
   };
 
   const showFriendContext = (username: string) => {
-    if (isFriend) {
+    if (friends) {
       //content can be accesed
       console.log("you can see the content");
       //later logic and APIs will be integrated
@@ -53,7 +57,7 @@ export const ContactProvider = ({ children }: ContactProviderProps) => {
 
   return (
     <ContactContext.Provider
-      value={{ isFriend, addFriend, showFriendDetail, showFriendContext }}
+      value={{ friends, addFriend, showFriendDetail, showFriendContext }}
     >
       {children}
     </ContactContext.Provider>
